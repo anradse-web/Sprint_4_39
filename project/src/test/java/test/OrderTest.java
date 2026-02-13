@@ -10,16 +10,17 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class OrderTest extends BaseTest {
-    private String buttonLocation;
-    private String name; //для значения поля "имя"
-    private String surname; //для значения поля "Фамилия"
-    private String address; ////для значения поля "Адрес"
-    private String Station; //для значения поля "Станция метро"
-    private String phone; //для значения поля "Телефон"
-    private String date; //для значения "Когда привезти самокат"
-    private String option; //для значения "Срок аренды"
-    private String comment; //для значения поля "Комментарий"
-    public void OrderTest(String buttonLocation, String name, String surname, String address, String Station, String phone, String date, String option, String comment) {
+    private final String buttonLocation;
+    private final String name; //для значения поля "имя"
+    private final String surname; //для значения поля "Фамилия"
+    private final String address; ////для значения поля "Адрес"
+    private final String Station; //для значения поля "Станция метро"
+    private final String phone; //для значения поля "Телефон"
+    private final String date; //для значения "Когда привезти самокат"
+    private final String option; //для значения "Срок аренды"
+    private final String comment; //для значения поля "Комментарий"
+
+    public OrderTest(String buttonLocation, String name, String surname, String address, String Station, String phone, String date, String option, String comment) {
         this.buttonLocation = buttonLocation;
         this.name = name;
         this.surname = surname;
