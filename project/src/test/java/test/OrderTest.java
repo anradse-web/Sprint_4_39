@@ -10,51 +10,51 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(Parameterized.class)
 public class OrderTest extends BaseTest {
-    private final String buttonLocation;
-    private final String name; //для значения поля "имя"
-    private final String surname; //для значения поля "Фамилия"
-    private final String address; ////для значения поля "Адрес"
-    private final String Station; //для значения поля "Станция метро"
-    private final String phone; //для значения поля "Телефон"
-    private final String date; //для значения "Когда привезти самокат"
-    private final String option; //для значения "Срок аренды"
-    private final String comment; //для значения поля "Комментарий"
+    private final String entryPoint;
+    private final String name;
+    private final String surname;
+    private final String address;
+    private final String station;
+    private final String phone;
+    private final String date;
+    private final String period;
+    private final String comment;
 
-    public OrderTest(String buttonLocation, String name, String surname, String address, String Station, String phone, String date, String option, String comment) {
-        this.buttonLocation = buttonLocation;
+    public OrderTest(String entryPoint, String name, String surname, String address, String station, String phone, String date, String period, String comment) {
+        this.entryPoint = entryPoint;
         this.name = name;
         this.surname = surname;
         this.address = address;
-        this.Station = Station;
+        this.station = station;
         this.phone = phone;
         this.date = date;
-        this.option = option;
+        this.period = period;
         this.comment = comment;
-
     }
 
     @Parameterized.Parameters
     public static Object[][] getTestData() {
         return new Object[][] {
-                {"header","Илья","Пупкин","ул. Малиновая, 2","Пражская","79999999999","12.05.1991","сутки","Звонить за 30 мин"},
-                {"middle","Максим","Федоров","Садовая, 20","Анино","79999999999","17.12.2002","трое суток","Откроет ребенок"},
+                {"header","Илья","Пупкин","ул. Малиновая, 2","Пражская","79872526483","12.03.2026","сутки","Звонить за 30 мин"},
+                {"bottom","Максим","Федоров","Садовая, 20","Анино","79257478899","29.02.2026","трое суток","Откроет ребенок"},
         };
     }
 
     @Test
     public void successfulOrderCreation() {
         MainPage mainPage = new MainPage(driver);
+
         mainPage.open();
         mainPage.acceptCookies();
 
-        if ("header".equals(buttonLocation)) {
+        if ("header".equals(entryPoint)) {
             mainPage.clickHeaderOrderButton();
         } else {
             mainPage.clickBottomOrderButton();
         }
-
         OrderPage orderPage = new OrderPage(driver);
-        orderPage.fillInOrderForm(name, surname, address, Station, phone, date,  option, comment);
+        orderPage.fillFirstStep(name, surname, address, station, phone);
+        orderPage.fillSecondStep(date, period, comment);
         orderPage.confirmOrder();
 
         boolean isSuccess = orderPage.isOrderSuccessModalVisible();

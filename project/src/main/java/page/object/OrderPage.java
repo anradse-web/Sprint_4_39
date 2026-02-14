@@ -8,8 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class OrderPage {
-
     private final WebDriver driver;
+
     private final By nameInput = By.xpath(".//input[@placeholder='* Имя']");
     private final By surnameInput = By.xpath(".//input[@placeholder='* Фамилия']");
     private final By addressInput = By.xpath(".//input[@placeholder='* Адрес: куда привезти заказ']");
@@ -25,39 +25,48 @@ public class OrderPage {
     private final By confirmButton = By.xpath(".//button[text()='Да']");
     private final By orderSuccessHeader = By.xpath(".//div[contains(@class, 'Order_ModalHeader')]");
 
-    public OrderPage(WebDriver driver) {
-
-        this.driver = driver;
+    public OrderPage(WebDriver driver) { this.driver = driver;
     }
 
-    public void fillInOrderForm(String name, String surname, String address, String phone, String stationName, String daysToAdd, String period, String comment) {
+    public void fillFirstStep(String name, String surname, String address, String phone, String station) {
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOfElementLocated(nameInput));
         driver.findElement(nameInput).sendKeys(name);
         driver.findElement(surnameInput).sendKeys(surname);
         driver.findElement(addressInput).sendKeys(address);
+
+
+        driver.findElement(stationInput).click();
+        driver.findElement(stationInput).sendKeys(station);
+        driver.findElement(stationInput).sendKeys(Keys.DOWN);
+        driver.findElement(stationInput).sendKeys(Keys.ENTER);
         driver.findElement(phoneInput).sendKeys(phone);
-        driver.findElement(stationInput).sendKeys(stationName);
-        driver.findElement(dateInput).sendKeys(daysToAdd);
-        driver.findElement(dateInput).sendKeys(Keys.ENTER);
-        driver.findElement(rentalPeriodField).click();
-        driver.findElement(By.xpath(".//div[@class='Dropdown-menu']/div[text()='" + period + "']")).click();
-
-        driver.findElement(greyColor).click();
-        driver.findElement(finalOrderButton).click();
-        driver.findElement(commentInput).sendKeys(comment);
-        driver.findElement(finalOrderButton).click();
+        driver.findElement(nextButton).click();
     }
 
-    public void confirmOrder() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(confirmButton)).click();
-    }
+        public void fillSecondStep(String date, String period, String comment) {
+            new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(dateInput));
+            driver.findElement(dateInput).sendKeys(date);
+            driver.findElement(dateInput).sendKeys(Keys.ENTER);
 
-    public boolean isOrderSuccessModalVisible() {
-        try {
-            new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOfElementLocated(orderSuccessHeader));
-            return driver.findElement(orderSuccessHeader).getText().contains("Заказ оформлен");
-        } catch (Exception e) {
-            return false;
+            driver.findElement(rentalPeriodField).click();
+            driver.findElement(By.xpath(".//div[@class='Dropdown-menu']/div[text()='" + period + "']")).click();
+
+            driver.findElement(greyColor).click();
+            driver.findElement(commentInput).sendKeys(comment);
+            driver.findElement(finalOrderButton).click();
+        }
+
+        public void confirmOrder() {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.elementToBeClickable(confirmButton)).click();
+        }
+
+        public boolean isOrderSuccessModalVisible() {
+            try {
+                new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfElementLocated(orderSuccessHeader));
+                return driver.findElement(orderSuccessHeader).getText().contains("Заказ оформлен");
+            } catch (Exception e) {
+                return false;
+            }
         }
     }
-}

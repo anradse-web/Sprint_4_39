@@ -13,7 +13,7 @@ public class MainPage {
     private final WebDriver driver;
 
     private final By headerOrderButton = By.className("Button_Button__ra12g");
-    private final By bottomOrderButton = By.xpath(".//div[contains(@class, 'Button_Middle__1CSJM') and text()='Заказать']");
+    private final By bottomOrderButton = By.xpath(".//div[contains(@class, 'Home_FinishButton')]//button");
     private final By faqSection = By.className("Home_FAQ__3uVm4");
     private final By cookieButton = By.id("rcc-confirm-button");
 
